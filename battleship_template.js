@@ -10,6 +10,23 @@ document.addEventListener("DOMContentLoaded", function () {
   const cellSize = canvas.width / gridSize;
   const cellSizeAI = canvasAI.width / gridSize;
 
+  let angle = 0;
+  let shipsPlacedCount = 0;
+  let playerHitsOnAi = 0
+
+  const optionsContainer = document.querySelector(".options-container");
+  const shipOptions = Array.from(optionsContainer.children);
+  const shipCount = shipOptions.length;
+  let totalShipLength = 0
+  const shipsQuery = optionsContainer.querySelectorAll('div');
+  shipsQuery.forEach(ship => {
+    // Get the ship length attribute value and convert it to a number
+    const shipLength = parseInt(ship.getAttribute('ship-length'));
+    totalShipLength += shipLength;
+});
+
+
+  let ships = []; // Ship coordinates that have been placed
   let shipsAI = [
     // first ship
     [0, 0],
@@ -34,7 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
     [9, 0],
     [9, 1],
   ]; // Ship placement
-  let hits = [];
+  let totalShipLengthAi= shipsAI.length
+  let aiHitOnPlayer = 0
+
+  let hitsOnPlayer = [];
   let hitsAI = [];
 
   function drawBoard() {
@@ -62,14 +82,20 @@ document.addEventListener("DOMContentLoaded", function () {
   // Click on Player Board
   function handleCanvasClick(event) {}
 
+  let playerTurn = false 
   // Click on AI Board
   function handleCanvasClickAI(event) {
+    if (!playerTurn) return
+    
+  
+
     const rect = canvasAI.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const gridX = Math.floor(x / cellSizeAI);
     const gridY = Math.floor(y / cellSizeAI);
-
+    
+    if (playerTurn){
     if (!hitsAI.some((hitAI) => hitAI[0] === gridX && hitAI[1] === gridY)) {
       if (
         shipsAI.some((shipAI) => shipAI[0] === gridX && shipAI[1] === gridY)
@@ -81,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
           cellSizeAI,
           cellSizeAI
         );
+        aiHitOnPlayer = aiHitOnPlayer + 1
         hitsAI.push([gridX, gridY]);
       } else {
         ctxAI.fillStyle = "blue";
@@ -92,16 +119,75 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         hitsAI.push([gridX, gridY]);
       }
+      playerTurn = false
+      $('#player-status').addClass('invisible')
+      $('#ai-status').removeClass('invisible')
+
+      setTimeout(function() {
+        
+        let bombDrop = generateUniqueCoordinate(hitsOnPlayer)
+       
+        const bombDropX = bombDrop[0]
+        const bombDropY = bombDrop[1]
+
+        console.log(ships.some((ship) => ship[0] === bombDropX && ship[1] === bombDropY))
+        console.log(bombDrop)
+  
+        
+
+        if (
+          ships.some((ship) => ship[0] === bombDropX && ship[1] === bombDropY)
+        ) {
+          ctx.fillStyle = "red";
+          ctx.fillRect(
+            bombDropX * cellSize,
+            bombDropY * cellSize,
+            cellSize,
+            cellSize
+          );
+          playerHitsOnAi = playerHitsOnAi + 1
+          hitsOnPlayer.push([bombDropX, bombDropY]);
+        } else {
+          ctx.fillStyle = "blue";
+          ctx.fillRect(
+            bombDropX * cellSize,
+            bombDropY * cellSize,
+            cellSize,
+            cellSize
+          );
+          hitsOnPlayer.push([bombDropX, bombDropY]);
+        }
+
+        playerTurn = true
+        $('#player-status').removeClass('invisible')
+        $('#ai-status').addClass('invisible')
+      }, 2000);
+
+
+      
+
     }
   }
+  }
 
-  let angle = 0;
-  let ships = []; // Ship coordinates that have been placed
-  let shipsPlacedCount = 0;
+  function generateUniqueCoordinate(existingCoordinates) {
+    // Generate random coordinates
+    const randomX = Math.floor(Math.random() * 10);
+    const randomY = Math.floor(Math.random() * 10);
+    const newCoordinate = [randomX, randomY];
 
-  const optionsContainer = document.querySelector(".options-container");
-  const shipOptions = Array.from(optionsContainer.children);
-  const shipCount = shipOptions.length;
+    // Check if the generated coordinates already exist in the input array
+    if (existingCoordinates.some(coord => coord[0] === randomX && coord[1] === randomY)) {
+        // If the coordinates already exist, recursively call the function to generate new coordinates
+        return generateUniqueCoordinate(existingCoordinates);
+    }
+
+    // If the generated coordinates do not exist in the input array, return them
+    return newCoordinate;
+}
+
+
+
 
   function rotate() {
     const shipOptions = Array.from(optionsContainer.children);
@@ -122,7 +208,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const coordinates = getPlacedShipCoordinates(gridX, gridY, angle, event);
     if (isValidPosition(gridX, gridY, coordinates)) {
       // update ships with newly placed coordinates
-      ships.push(coordinates);
+      
+      coordinates.forEach(pair => {
+        ships.push(pair)
+      })
 
       for (let i = 0; i < coordinates.length; i++) {
         ctx.fillStyle = "gray";
@@ -133,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
           cellSize
         );
       }
-      console.log(ships);
+      
       // hide selection
       $(`#${event.target.id}`).hide();
       shipsPlacedCount = shipsPlacedCount + 1;
@@ -169,7 +258,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // outside of board
       return false;
     }
-
+    
+    // invalid placement, len of ship exits board
     if (
       coordinates.some(
         (coordinate) =>
@@ -183,13 +273,36 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     }
 
+    // invalid placement, overlapping ships
+    if(ships.some(coord1 => coordinates.some(coord2 => coord1[0] 
+      === coord2[0] && coord1[1] === coord2[1]))){
+        return false
+      }
+
     return true;
   }
 
+  function checkWinner(){
+    if (totalShipLength === playerHitsOnAi){
+        playerTurn = false
+    }
+    if (totalShipLengthAi === aiHitOnPlayer){
+      playerTurn = false
+    }
+  }
+
+  function startGame() {
+    $("#start-btn").hide();
+    $('#player-status').removeClass('invisible')
+    playerTurn = true
+  }
+
   const rotateBtn = document.querySelector("#rotate-btn");
+  const startBtn = document.querySelector("#start-btn");
 
   // rotate ships
   rotateBtn.addEventListener("click", rotate);
+  startBtn.addEventListener("click", startGame);
   // prevent drag ghost animation
   document.addEventListener("dragover", function (e) {
     e.preventDefault();
@@ -199,7 +312,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function initGame() {
     drawBoard();
-
+    $('#player-status').addClass('invisible')
+      $('#ai-status').addClass('invisible')
     canvasAI.addEventListener("click", handleCanvasClickAI);
   }
 

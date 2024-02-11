@@ -10,6 +10,10 @@
 
 <body>
     <div>Player Board</div>
+    <span>Hits: </span> <span id="player-hits"></span>
+    <span>Misses: </span> <span id="player-misses"></span>
+    <div id="player-status" class="">Player Fire!</div>
+
     <canvas id="battleshipCanvasPlayer" width="300" height="300"></canvas>
     <div style="padding: 10px;"></div>
 
@@ -26,6 +30,9 @@
     <button class="hide" id="start-btn">Start Game</button>
 
     <div>AI Board</div>
+    <span>Hits: </span> <span id="ai-hits"></span>
+    <span>Misses: </span> <span id="ai-misses"></span>
+    <div id="ai-status" class="">AI Fire!</div>
     <canvas id="battleshipCanvasAI" width="300" height="300"></canvas>
     <script src="battleship_template.js"></script>
 </body>
