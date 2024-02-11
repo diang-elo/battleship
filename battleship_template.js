@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const cellSize = canvas.width / gridSize;
   const cellSizeAI = canvasAI.width / gridSize;
 
- 
-
   let shipsAI = [
     // first ship
     [0, 0],
@@ -97,15 +95,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
-  let angle = 0; 
+  let angle = 0;
   let ships = []; // Ship coordinates that have been placed
-  let shipsPlacedCount = 0
+  let shipsPlacedCount = 0;
 
-  
   const optionsContainer = document.querySelector(".options-container");
-  const shipOptions = Array.from(optionsContainer.children)
-  const shipCount = shipOptions.length
+  const shipOptions = Array.from(optionsContainer.children);
+  const shipCount = shipOptions.length;
 
   function rotate() {
     const shipOptions = Array.from(optionsContainer.children);
@@ -114,8 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
       (ship) => (ship.style.transform = `rotate(${angle}deg)`)
     );
   }
- 
-  function placeShip (event){
+
+  function placeShip(event) {
     event.preventDefault();
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -123,12 +119,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const gridX = Math.floor(x / cellSizeAI);
     const gridY = Math.floor(y / cellSizeAI);
 
-    const coordinates = getPlacedShipCoordinates(gridX, gridY, angle, event)
-    if(isValidPosition(gridX, gridY, coordinates)) {
+    const coordinates = getPlacedShipCoordinates(gridX, gridY, angle, event);
+    if (isValidPosition(gridX, gridY, coordinates)) {
       // update ships with newly placed coordinates
-      ships.push(coordinates)
+      ships.push(coordinates);
 
-      for (let i=0; i < coordinates.length; i ++){
+      for (let i = 0; i < coordinates.length; i++) {
         ctx.fillStyle = "gray";
         ctx.fillRect(
           coordinates[i][0] * cellSize,
@@ -137,52 +133,57 @@ document.addEventListener("DOMContentLoaded", function () {
           cellSize
         );
       }
-      console.log(ships)
+      console.log(ships);
       // hide selection
-      $(`#${event.target.id}`).hide()
-      shipsPlacedCount = shipsPlacedCount + 1
-      if (shipsPlacedCount == shipCount){
-        $("#rotate-btn, .options-container").hide()
-        $("#start-btn").show()
+      $(`#${event.target.id}`).hide();
+      shipsPlacedCount = shipsPlacedCount + 1;
+      if (shipsPlacedCount == shipCount) {
+        $("#rotate-btn, .options-container").hide();
+        $("#start-btn").show();
       }
-
-    }else{
-      console.log("false")
+    } else {
+      console.log("false");
     }
-
   }
 
-  function getPlacedShipCoordinates(x,y, angle,event){
+  function getPlacedShipCoordinates(x, y, angle, event) {
     const coordinates = [];
-    const rot = angle
-    const len = parseInt(event.target.getAttribute("ship-length"))
-     
+    const rot = angle;
+    const len = parseInt(event.target.getAttribute("ship-length"));
+
     if (rot === 0) {
       for (let i = x - len + 1; i <= x; i++) {
-          coordinates.push([i, y]);
+        coordinates.push([i, y]);
       }
-  } else if (rot === 90) {
+    } else if (rot === 90) {
       for (let j = y; j <= y + len - 1; j++) {
-          coordinates.push([x, j]);
+        coordinates.push([x, j]);
       }
-  }
-
-  return coordinates;
-}
-
-  function isValidPosition(x, y, coordinates){
-    if (x < 0 || x > 9|| y < 0 || y > 9){
-      // outside of board
-      return false
     }
 
-    if (coordinates.some((coordinate) => coordinate[0] < 0 || coordinate[0] > 9
-      || coordinate[1] < 0 || coordinate[1] > 9 )){
-        // invalid placement, out of bounds
-        return false
-    } 
+    return coordinates;
+  }
 
-    return true
+  function isValidPosition(x, y, coordinates) {
+    if (x < 0 || x > 9 || y < 0 || y > 9) {
+      // outside of board
+      return false;
+    }
+
+    if (
+      coordinates.some(
+        (coordinate) =>
+          coordinate[0] < 0 ||
+          coordinate[0] > 9 ||
+          coordinate[1] < 0 ||
+          coordinate[1] > 9
+      )
+    ) {
+      // invalid placement, out of bounds
+      return false;
+    }
+
+    return true;
   }
 
   const rotateBtn = document.querySelector("#rotate-btn");
@@ -190,9 +191,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // rotate ships
   rotateBtn.addEventListener("click", rotate);
   // prevent drag ghost animation
-  document.addEventListener('dragover', function(e) { e.preventDefault() })
+  document.addEventListener("dragover", function (e) {
+    e.preventDefault();
+  });
   // on drag n drop
-  shipOptions.forEach(ship => ship.addEventListener('dragend', placeShip))
+  shipOptions.forEach((ship) => ship.addEventListener("dragend", placeShip));
 
   function initGame() {
     drawBoard();
