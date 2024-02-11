@@ -1,0 +1,46 @@
+.options-container {
+    width: 300px;
+    height: 50px;
+    background-color: yellow;
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.ship {
+    background-color: gray;
+}
+
+.ship1 {
+    width: 20px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship2 {
+    width: 30px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship3 {
+    width: 40px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship4 {
+    width: 30px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship5 {
+    width: 50px;
+    height: 10px;
+    margin: 3px;
+}
+
+.hide {
+    display: none;
+}
