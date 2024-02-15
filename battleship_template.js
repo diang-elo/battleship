@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let angle = 0;
   let shipsPlacedCount = 0;
-  let playerHitsOnAi = 0
+  let playerHitsOnAi =0, playerMissOnAI=0, aiHitOnPlayer=0, aiMissOnPlayer = 0
+
 
   const optionsContainer = document.querySelector(".options-container");
   const shipOptions = Array.from(optionsContainer.children);
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     [9, 1],
   ]; // Ship placement
   let totalShipLengthAi= shipsAI.length
-  let aiHitOnPlayer = 0
+ 
 
   let hitsOnPlayer = [];
   let hitsAI = [];
@@ -87,13 +88,15 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleCanvasClickAI(event) {
     if (!playerTurn) return
     
-  
-
     const rect = canvasAI.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const gridX = Math.floor(x / cellSizeAI);
     const gridY = Math.floor(y / cellSizeAI);
+    const playerHtsOnAIDiv = document.getElementById('ai-hits');
+    const playerMissOnAIDiv = document.getElementById('ai-misses');
+    const aiHtsOnPlayerDiv = document.getElementById('player-hits');
+    const aiMissOnPlayerDiv = document.getElementById('player-misses');
     
     if (playerTurn){
     if (!hitsAI.some((hitAI) => hitAI[0] === gridX && hitAI[1] === gridY)) {
@@ -107,7 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
           cellSizeAI,
           cellSizeAI
         );
-        aiHitOnPlayer = aiHitOnPlayer + 1
+        playerHitsOnAi++
+        changeElementText("ai-hits", playerHitsOnAi)
         hitsAI.push([gridX, gridY]);
       } else {
         ctxAI.fillStyle = "blue";
@@ -118,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
           cellSizeAI
         );
         hitsAI.push([gridX, gridY]);
+        playerMissOnAI++
+        changeElementText("ai-misses", playerMissOnAI)
       }
       playerTurn = false
       $('#player-status').addClass('invisible')
@@ -145,8 +151,10 @@ document.addEventListener("DOMContentLoaded", function () {
             cellSize,
             cellSize
           );
-          playerHitsOnAi = playerHitsOnAi + 1
+        
           hitsOnPlayer.push([bombDropX, bombDropY]);
+          aiHitOnPlayer++
+          changeElementText("player-hits", aiHitOnPlayer)
         } else {
           ctx.fillStyle = "blue";
           ctx.fillRect(
@@ -156,19 +164,25 @@ document.addEventListener("DOMContentLoaded", function () {
             cellSize
           );
           hitsOnPlayer.push([bombDropX, bombDropY]);
+          aiMissOnPlayer++
+          changeElementText("player-misses", aiMissOnPlayer)
         }
 
         playerTurn = true
         $('#player-status').removeClass('invisible')
         $('#ai-status').addClass('invisible')
-      }, 2000);
+      }, 2000);  
 
-
-      
-
+    }else{
+      displayError("Bomb already placed")
     }
   }
   }
+
+  function changeElementText(elementId, text) {
+    let  element = document.getElementById(elementId);
+    element.textContent = text
+}
 
   function generateUniqueCoordinate(existingCoordinates) {
     // Generate random coordinates
@@ -253,9 +267,17 @@ document.addEventListener("DOMContentLoaded", function () {
     return coordinates;
   }
 
+  function displayError(error){
+    changeElementText('error-msg', error)
+    setTimeout(function() { 
+      changeElementText('error-msg', "")
+    },2000)
+  }
+
   function isValidPosition(x, y, coordinates) {
     if (x < 0 || x > 9 || y < 0 || y > 9) {
       // outside of board
+      displayError("invalid placement, outside of board")
       return false;
     }
     
@@ -270,12 +292,14 @@ document.addEventListener("DOMContentLoaded", function () {
       )
     ) {
       // invalid placement, out of bounds
+      displayError("invalid placement, part of shipment leaves board")
       return false;
     }
 
     // invalid placement, overlapping ships
     if(ships.some(coord1 => coordinates.some(coord2 => coord1[0] 
       === coord2[0] && coord1[1] === coord2[1]))){
+        displayError("invalid placement, overlapping ships")
         return false
       }
 

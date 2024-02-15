@@ -10,12 +10,14 @@
 
 <body>
     <div>Player Board</div>
-    <span>Hits: </span> <span id="player-hits"></span>
-    <span>Misses: </span> <span id="player-misses"></span>
+    <span>Hits: </span> <span id="player-hits">0</span>
+    <span>Misses: </span> <span id="player-misses">0</span>
     <div id="player-status" class="">Player Fire!</div>
 
     <canvas id="battleshipCanvasPlayer" width="300" height="300"></canvas>
     <div style="padding: 10px;"></div>
+
+    <div style="color:red" id="error-msg"></div>
 
     <div class="options-container">
         <div class="ship ship1" id="ship-1" ship-length=4 draggable="true"></div>
@@ -30,10 +32,11 @@
     <button class="hide" id="start-btn">Start Game</button>
 
     <div>AI Board</div>
-    <span>Hits: </span> <span id="ai-hits"></span>
-    <span>Misses: </span> <span id="ai-misses"></span>
+    <span>Hits: </span> <span id="ai-hits">0</span>
+    <span>Misses: </span> <span id="ai-misses">0</span>
     <div id="ai-status" class="">AI Fire!</div>
     <canvas id="battleshipCanvasAI" width="300" height="300"></canvas>
+
     <script src="battleship_template.js"></script>
 </body>
 
