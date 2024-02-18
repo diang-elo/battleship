@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
       )
     ) {
       // invalid placement, out of bounds
-      displayError("invalid placement, part of shipment leaves board");
+      displayError("invalid placement, part of ship leaves board");
       return false;
     }
 
