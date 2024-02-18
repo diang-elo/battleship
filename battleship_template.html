@@ -5,37 +5,51 @@
     <title>Battleship Game</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 </head>
 
 <body>
-    <div>Player Board</div>
-    <span>Hits: </span> <span id="player-hits">0</span>
-    <span>Misses: </span> <span id="player-misses">0</span>
-    <div id="player-status" class="">Player Fire!</div>
 
-    <canvas id="battleshipCanvasPlayer" width="300" height="300"></canvas>
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <h2>The winner is</h2>
+            <button id="newGameButton">New Game</button>
+        </div>
+    </div>
+
+
+    <div class="board-container">
+        <div class="board" id="player-board">
+            <div>Player Board</div>
+            <span>Hits: </span><span id="player-hits">0</span>
+            <span>Misses: </span><span id="player-misses">0</span>
+            <div id="player-status">Player Fire!</div>
+            <canvas id="battleshipCanvasPlayer" width="300" height="300"></canvas>
+        </div>
+
+        <div class="board" id="ai-board">
+            <div>AI Board</div>
+            <span>Hits: </span><span id="ai-hits">0</span>
+            <span>Misses: </span><span id="ai-misses">0</span>
+            <div id="ai-status">AI Fire!</div>
+            <canvas id="battleshipCanvasAI" width="300" height="300"></canvas>
+        </div>
+    </div>
+
     <div style="padding: 10px;"></div>
 
     <div style="color:red" id="error-msg"></div>
 
     <div class="options-container">
-        <div class="ship ship1" id="ship-1" ship-length=4 draggable="true"></div>
-        <div class="ship ship2" id="ship-2" ship-length=2 draggable="true"></div>
-        <div class="ship ship3" id="ship-3" ship-length=3 draggable="true"></div>
-        <div class="ship ship4" id="ship-4" ship-length=2 draggable="true"></div>
-        <div class="ship ship5" id="ship-5" ship-length=5 draggable="true"></div>
-
+        <div class="ship ship1" id="ship-1" ship-length="4" draggable="true"></div>
+        <div class="ship ship2" id="ship-2" ship-length="2" draggable="true"></div>
+        <div class="ship ship3" id="ship-3" ship-length="3" draggable="true"></div>
+        <div class="ship ship4" id="ship-4" ship-length="2" draggable="true"></div>
+        <div class="ship ship5" id="ship-5" ship-length="5" draggable="true"></div>
     </div>
 
     <button id="rotate-btn">Rotate</button>
     <button class="hide" id="start-btn">Start Game</button>
-
-    <div>AI Board</div>
-    <span>Hits: </span> <span id="ai-hits">0</span>
-    <span>Misses: </span> <span id="ai-misses">0</span>
-    <div id="ai-status" class="">AI Fire!</div>
-    <canvas id="battleshipCanvasAI" width="300" height="300"></canvas>
 
     <script src="battleship_template.js"></script>
 </body>
