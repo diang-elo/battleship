@@ -1,15 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Gets the canvas elements for the player and AI boards.
   const canvas = document.getElementById("battleshipCanvasPlayer");
   const canvasAI = document.getElementById("battleshipCanvasAI");
 
+  // Gets the 2D rendering contexts for the player and AI canvases.
   const ctx = canvas.getContext("2d");
   const ctxAI = canvasAI.getContext("2d");
 
+  // Sets the size of the grid for both boards.
   const gridSize = 10;
 
+  // Calculates the size of each cell based on the canvas width and grid size.
   const cellSize = canvas.width / gridSize;
   const cellSizeAI = canvasAI.width / gridSize;
 
+  // Initializes variables for game state tracking.
   let angle = 0;
   let shipsPlacedCount = 0;
   let playerHitsOnAi = 0,
@@ -17,10 +22,13 @@ document.addEventListener("DOMContentLoaded", function () {
     aiHitOnPlayer = 0,
     aiMissOnPlayer = 0;
 
+  // Selects the container for ship options and converts its children to an array.
   const optionsContainer = document.querySelector(".options-container");
   const shipOptions = Array.from(optionsContainer.children);
   const shipCount = shipOptions.length;
   let totalShipLength = 0;
+
+  // Calculates the total length of all ships based on attributes
   const shipsQuery = optionsContainer.querySelectorAll("div");
   shipsQuery.forEach((ship) => {
     // Get the ship length attribute value and convert it to a number
@@ -28,9 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
     totalShipLength += shipLength;
   });
 
-  let ships = []; // Ship coordinates that have been placed
+  // Initializes arrays for tracking ship placements and hits.
+  let ships = [];
   let shipsArray = [];
-  let shipsAI = []; // Ship placement
+  let shipsAI = [];
   let shipsAiArray = [];
 
   let totalShipLengthAi = 0;
@@ -38,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let hitsOnPlayer = [];
   let hitsAI = [];
 
+  // Draws the grid on the canvas for both player and AI.
   function drawBoard() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -61,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   let playerTurn = false;
-  // Click on AI Board
+  // plater attacks and ai attacks
   function handleCanvasClickAI(event) {
     if (!playerTurn) return;
 
@@ -144,6 +154,9 @@ document.addEventListener("DOMContentLoaded", function () {
             changeElementText("player-misses", aiMissOnPlayer);
           }
 
+          if (checkWinner()) {
+            return;
+          }
           playerTurn = true;
           $("#player-status").removeClass("invisible");
           $("#ai-status").addClass("invisible");
@@ -154,11 +167,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Updates the text content of a specified HTML element.
   function changeElementText(elementId, text) {
     let element = document.getElementById(elementId);
     element.textContent = text;
   }
 
+  // Generates a unique coordinate that is not already in the list of existing coordinates.
   function generateUniqueCoordinate(existingCoordinates) {
     // Generate random coordinates
     const randomX = Math.floor(Math.random() * 10);
@@ -179,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return newCoordinate;
   }
 
+  // Rotates the ships on the UI.
   function rotate() {
     const shipOptions = Array.from(optionsContainer.children);
     angle = angle === 0 ? 90 : 0;
@@ -187,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
+  // Handles placing a ship on the player's board.
   function placeShip(event) {
     event.preventDefault();
     const rect = canvas.getBoundingClientRect();
@@ -225,6 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Calculates the coordinates for a ship based on its starting position and orientation.
   function getPlacedShipCoordinates(x, y, angle, event) {
     const coordinates = [];
     const rot = angle;
@@ -243,6 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return coordinates;
   }
 
+  // Displays an error message temporarily.
   function displayError(error) {
     changeElementText("error-msg", error);
     setTimeout(function () {
@@ -250,6 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2000);
   }
 
+  // Validates the position of a ship to ensure it's within the game board and not overlapping other ships.
   function isValidPosition(x, y, coordinates) {
     if (x < 0 || x > 9 || y < 0 || y > 9) {
       // outside of board
@@ -287,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
+  // Checks if  ships is sunk to change color
   function checkForSunkShips(bombHits, ships, ctx) {
     // Iterate over each ship
     for (let i = 0; i < ships.length; i++) {
@@ -333,6 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Generates coordinates for AI ships at the start of the game.
   function generateShipCoordinates() {
     // Initialize arrays to store ship coordinates
     const shipArrays = [];
@@ -402,6 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return [shipArrays, allShipCoordinates];
   }
 
+  // Checks if there's a winner by comparing the total ship lengths with hits.
   function checkWinner() {
     if (totalShipLength === playerHitsOnAi) {
       playerTurn = false;
@@ -433,6 +456,7 @@ document.addEventListener("DOMContentLoaded", function () {
   rotateBtn.addEventListener("click", rotate);
   startBtn.addEventListener("click", startGame);
 
+  // Code to reset the game
   document
     .getElementById("newGameButton")
     .addEventListener("click", function () {
@@ -448,6 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
   shipOptions.forEach((ship) => ship.addEventListener("dragend", placeShip));
   canvasAI.addEventListener("click", handleCanvasClickAI);
 
+  // initialize game
   function initGame() {
     drawBoard();
     $("#player-status").addClass("invisible");

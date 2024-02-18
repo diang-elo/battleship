@@ -1,6 +1,6 @@
 .options-container {
     width: 300px;
-    height: 50px;
+    height: 60px;
     background-color: yellow;
     display: flex;
     align-items: center;
@@ -12,7 +12,7 @@
 }
 
 .ship1 {
-    width: 20px;
+    width: 50px;
     height: 10px;
     margin: 3px;
 }
@@ -36,7 +36,7 @@
 }
 
 .ship5 {
-    width: 50px;
+    width: 60px;
     height: 10px;
     margin: 3px;
 }
@@ -66,9 +66,6 @@ body {
 }
 
 .board {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -112,4 +109,32 @@ button {
     cursor: pointer;
     padding: 10px 20px;
     margin-top: 20px;
+}
+
+.board-title{
+    text-transform: uppercase;
+    font-family: verdana;
+    font-size: 28px;
+    font-weight: 700;
+    color: gold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+   
+}
+
+.game-turn{
+    text-transform: uppercase;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight: 600;
+    color: #800000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#error-msg{
+    text-transform: uppercase;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight: 600;
+    color: #800000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }

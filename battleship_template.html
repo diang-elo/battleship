@@ -20,25 +20,25 @@
 
     <div class="board-container">
         <div class="board" id="player-board">
-            <div>Player Board</div>
+            <div class="board-title" >Player Board</div>
             <span>Hits: </span><span id="player-hits">0</span>
             <span>Misses: </span><span id="player-misses">0</span>
-            <div id="player-status">Player Fire!</div>
+            <div class="game-turn" id="player-status">Player Fire!</div>
             <canvas id="battleshipCanvasPlayer" width="300" height="300"></canvas>
         </div>
 
         <div class="board" id="ai-board">
-            <div>AI Board</div>
+            <div class="board-title">AI Board</div>
             <span>Hits: </span><span id="ai-hits">0</span>
             <span>Misses: </span><span id="ai-misses">0</span>
-            <div id="ai-status">AI Fire!</div>
+            <div class="game-turn" id="ai-status">AI Fire!</div>
             <canvas id="battleshipCanvasAI" width="300" height="300"></canvas>
         </div>
     </div>
 
     <div style="padding: 10px;"></div>
 
-    <div style="color:red" id="error-msg"></div>
+    <div  id="error-msg"></div>
 
     <div class="options-container">
         <div class="ship ship1" id="ship-1" ship-length="4" draggable="true"></div>
