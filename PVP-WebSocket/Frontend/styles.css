@@ -1,0 +1,149 @@
+.options-container {
+    width: 300px;
+    height: 60px;
+    background-color: yellow;
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.ship {
+    background-color: gray;
+}
+
+.ship1 {
+    width: 50px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship2 {
+    width: 30px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship3 {
+    width: 40px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship4 {
+    width: 30px;
+    height: 10px;
+    margin: 3px;
+}
+
+.ship5 {
+    width: 60px;
+    height: 10px;
+    margin: 3px;
+}
+
+.hide {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 20px;
+}
+
+.board-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.board {
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.options-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.ship {
+    cursor: grab;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-top: 20px;
+}
+
+.board-title{
+    text-transform: uppercase;
+    font-family: verdana;
+    font-size: 28px;
+    font-weight: 700;
+    color: gold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+   
+}
+
+.game-turn{
+    text-transform: uppercase;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight: 600;
+    color: #800000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#error-msg{
+    text-transform: uppercase;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight: 600;
+    color: #800000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.error-msg{
+    text-transform: uppercase;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight: 600;
+    color: #800000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
